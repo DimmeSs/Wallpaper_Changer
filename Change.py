@@ -34,5 +34,9 @@ def all_in():
     set_wallpaper(wallpaper_dir, selected_wallpaper)
     time.sleep(1)
            
-
 all_in()
+# To Do:
+#Add options for different wallpapers based on time of day or color scheme
+#Implement error handling for invalid user inputs
+#Allow users to preview the wallpapers before selecting one
+#Allow users to select random wallpaper
