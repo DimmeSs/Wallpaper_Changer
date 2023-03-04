@@ -11,10 +11,21 @@ from termcolor import colored
 #DESIGN HERE \/ \/
 os.system("mode con: cols=55 lines=20")#default rozmiar okna
 
+def ascii():
+    art = print("""
+                    █▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
+                  ██▀▀▀██▀▀▀▀▀▀██▀▀▀██
+                  █▒▒▒▒▒█▒▀▀▀▀▒█▒▒▒▒▒█
+                  █▒▒▒▒▒█▒████▒█▒▒▒▒▒█
+                  ██▄▄▄██▄▄▄▄▄▄██▄▄▄██
+    """)
+
 def design():  #definition that returns characters for cmd design
     a = "\n#" + "="*53 +"#\n"
     return a
+
 def loading_animation():  # Little animation for drip <3
+    clear_screen()
     dots = itertools.cycle([".", "..", "..."])
     counter = 0
     while counter < 3:  # Break after 3 dots
@@ -22,7 +33,8 @@ def loading_animation():  # Little animation for drip <3
         time.sleep(0.5)
         counter += 1
     clear_screen()
-    print("// Wallpaper Changed \\\\ \n Have a nice Day <3")
+    ascii()
+    print("                 // Wallpaper Changed \\\\ \n                   "+colored("Have a nice Day <3","light_red"))
 
 def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")  # clear cmd depending on operatin sys. ( windows or unix-based)
@@ -96,24 +108,24 @@ def get_party_wallpaper():
     return wallpaper_dir, selected_wallpaper
 
 def q_again():
-    q= input(design()+"Jeżeli chcesz zmienić ponownie tapete wpisz cokolwiek\n           Jeżeli nie to wciśnij [ENTER]\n")
+    q= input(design()+"If you want to change wallpaper again, type anything\n                If not, press [ENTER]\n")
     if q=="":
         return False#close program
     else:
         clear_screen()
         return True#here we go again
-
 def all_in():
     i = 1
+    ascii()
     while True:
         if i == 1:#nie wiem co zrobić z tymi spacjami JESZCZE
-            print(design()+"\n                 [Wallpaper Changer]\n          Hello write what you want to do :3\n          If you have a problem Press [ENTER]\n"+design())  # first_time_info
+            print(design()+"\n                  [Wallpaper Changer]\n             What do you want to do today?"+colored("\n           If you have a problem Press [ENTER]\n","light_blue")+design())  # first_time_info
         else:
-            print("Wiec? Czego pragnie dusza")
+            print("           If you decide, write what to do :3"+colored("\n           If you have a problem Press [ENTER]\n","light_blue")+design())
 
         if i%5==0:#for debilizm
              clear_screen()
-             print(design()+"Możesz przestac udawać i zmienić wreszcie tą tapete?\n        If you have a problem Press [ENTER]"+design())
+             print(design()+"    Can you stop pretending and finally change this\n                wallpaper Pleeeease?"+colored("\n           If you have a problem Press [ENTER]\n","light_blue")+design())
              i=2
 
         user_input = input("")
@@ -123,7 +135,8 @@ def all_in():
             show_wallpapers()
         elif user_input == "":#Help Command
             clear_screen()
-            print(design()+"\nYou can enter the things below:\n   rand - chooses random wallpaper\n   show - opens a file_window with wallpapers to check\n   party - chooses one of my favorite wallpapers <3\n","\nFor eye health:\n   day - chooses wallpaper that is good on the day\n   night - chooses wallpaper that is good in the night\n\n"+design())
+            print(design()+colored("\n         V You can enter the things below V","light_green")+colored("\n   rand","light_cyan"),"- chooses random wallpaper from available"+colored("\n   show","light_cyan"),"- opens a file_window with wallpapers to check\n   "+colored("party","light_cyan"),"- chooses one of my favorite wallpapers <3\n",
+                  "\n                 "+colored("V For eye health V","light_green"),"\n   "+colored("day","cyan")+" - chooses wallpaper that is good on the day\n   "+colored("night","cyan")+" - chooses wallpaper that is good in the night\n\n"+design())#HELP INFO 
             i += 1
             
         elif user_input.lower() == "rand":
@@ -167,17 +180,14 @@ def all_in():
                 break
         else:
             i+=1
-            print(design()+"\n               Złe dane podałeś debilu\n"+design())
+            clear_screen()
+            print(design()+colored("\n          [Error] You provided a wrong data\n","red")+design())
             
 all_in()
 # To Do:
-    # DESIGN:
-        # Spaces in text
-        # Colors
+#.exe file
     # Dont repeat code 
         # if q_again() == True:
         #                 pass
         #             else:
         #                 break
-    # Search for bugs:
-        #gdy wpisuje p to zaznacza mi wszystkie pliki
