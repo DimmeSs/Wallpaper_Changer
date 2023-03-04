@@ -87,7 +87,7 @@ def get_night_wallpaper():
 def get_party_wallpaper():
     program_dir = os.path.dirname(os.path.abspath(__file__))
     wallpaper_dir = os.path.join(program_dir, "Wallpapers")
-    wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith(".jpg") and "p" in f.lower()]  # lista plików z rozszerzeniem .jpg w folderze, które zawierają literę "d" w nazwie
+    wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith(".jpg") and "!" in f.lower()]  # lista plików z rozszerzeniem .jpg w folderze, które zawierają literę "d" w nazwie
     num_wallpapers = len(wallpaper_files)  # liczba plików z tapetami
     if (num_wallpapers == 0):  # Jeśli nie ma żadnego pliku spełniającego kryteria, to zwraca None
         return None

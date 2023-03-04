@@ -1,4 +1,4 @@
 Rename wallpaper with letter:
-p - to use it as "party" type
+! - to use it as "party" type
 d - to use it as "day" type
 n - to use it as "night" type
