@@ -7,8 +7,29 @@ import random
 from termcolor import colored
 
 # print(colored("[Error] You didn't specify a place.Please retype ","red"))
+
+#DESIGN HERE \/ \/
 os.system("mode con: cols=55 lines=20")#default rozmiar okna
 
+def design():  #definition that returns characters for cmd design
+    a = "\n#" + "="*53 +"#\n"
+    return a
+def loading_animation():  # Little animation for drip <3
+    dots = itertools.cycle([".", "..", "..."])
+    counter = 0
+    while counter < 3:  # Break after 3 dots
+        print(f"Loading{next(dots)}", end="\r")
+        time.sleep(0.5)
+        counter += 1
+    clear_screen()
+    print("// Wallpaper Changed \\\\ \n Have a nice Day <3")
+
+def clear_screen():
+    os.system("cls" if os.name == "nt" else "clear")  # clear cmd depending on operatin sys. ( windows or unix-based)
+#DESIGN HERE /\ /\
+
+
+#CODE \/ \/
 def set_wallpaper(wallpaper_dir, selected_wallpaper):
     # Ustawia tapetę jako tapetę systemową
     SPI_SETDESKWALLPAPER = 20
@@ -74,30 +95,13 @@ def get_party_wallpaper():
     selected_wallpaper = wallpaper_files[random_index]  # wybrana tapeta
     return wallpaper_dir, selected_wallpaper
 
-def design():  #definition that returns characters for cmd design
-    a = "\n#" + "="*53 +"#\n"
-    return a
-
-def clear_screen():
-    os.system("cls" if os.name == "nt" else "clear")  # clear cmd depending on operatin sys. ( windows or unix-based)
-
 def q_again():
-    q= input(design()+"Jeżeli chcesz zmienić ponownie tapete wpisz cokolwiek\nJeżeli nie to wciśnij [ENTER]")
+    q= input(design()+"Jeżeli chcesz zmienić ponownie tapete wpisz cokolwiek\n           Jeżeli nie to wciśnij [ENTER]\n")
     if q=="":
         return False#close program
     else:
         clear_screen()
         return True#here we go again
-
-def loading_animation():  # Little animation for drip <3
-    dots = itertools.cycle([".", "..", "..."])
-    counter = 0
-    while counter < 3:  # Break after 3 dots
-        print(f"Loading{next(dots)}", end="\r")
-        time.sleep(0.5)
-        counter += 1
-    clear_screen()
-    print("// Wallpaper Changed \\\\ \n Have a nice Day <3")
 
 def all_in():
     i = 1
@@ -165,14 +169,14 @@ def all_in():
             i+=1
             print(design()+"\n               Złe dane podałeś debilu\n"+design())
             
-
 all_in()
 # To Do:
-# DESIGN:
-    # Spaces in text
-# Dont repeat code 
-    # if q_again() == True:
-    #                 pass
-    #             else:
-    #                 break
-# Search for bugs
+    # DESIGN:
+        # Spaces in text
+        # Colors
+    # Dont repeat code 
+        # if q_again() == True:
+        #                 pass
+        #             else:
+        #                 break
+    # Search for bugs
