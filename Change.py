@@ -179,4 +179,5 @@ all_in()
         #                 pass
         #             else:
         #                 break
-    # Search for bugs
+    # Search for bugs:
+        #gdy wpisuje p to zaznacza mi wszystkie pliki
