@@ -131,7 +131,8 @@ def all_in():
         user_input = input("")
         if user_input.lower() == "show":
             clear_screen()
-            print(design()+"File with wallpapers will pop up :3"+design())
+            print(design()+"\n          File with wallpapers will pop up :3\n"+design())
+            i+=1
             show_wallpapers()
         elif user_input == "":#Help Command
             clear_screen()
