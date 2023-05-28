@@ -21,7 +21,7 @@ def ascii():
     """)
 
 def design():  #definition that returns characters for cmd design
-    a = "\n#" + "="*53 +"#\n"
+    a = "\n" + "_"*55 +"\n"
     return a
 
 def loading_animation():  # Little animation for drip <3
@@ -61,11 +61,14 @@ def set_wallpaper(wallpaper_dir, selected_wallpaper): # Sets the wallpaper as sy
     time.sleep(1)
 
 def show_wallpapers():#shows folder with wallpapers
+    clear_screen()
+    print(design()+"\n          File with wallpapers will pop up :3\n")
+    i+=1
     program_dir = os.path.dirname(os.path.abspath(__file__))
     wallpaper_dir = os.path.join(program_dir, "Wallpapers")
     subprocess.Popen(f'explorer "{wallpaper_dir}"')
 
-def get_party_wallpaper(): # takes random wallpaper from wallpapers that contains "!" MORE INFO IN .TXT
+def party_wallpaper(): # takes random wallpaper from wallpapers that contains "!" MORE INFO IN .TXT
     program_dir = os.path.dirname(os.path.abspath(__file__))
     wallpaper_dir = os.path.join(program_dir, "Wallpapers")
     wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith(".jpg") and "!" in f.lower()]  # lista plików z rozszerzeniem .jpg w folderze
@@ -74,18 +77,20 @@ def get_party_wallpaper(): # takes random wallpaper from wallpapers that contain
         return None
     random_index = random.randint(0, num_wallpapers - 1)  # Draw an index of one of the wallpapers
     selected_wallpaper = wallpaper_files[random_index]  # selected wallpaper
-    return wallpaper_dir, selected_wallpaper
+    loading_animation()  # random
+    set_wallpaper(wallpaper_dir, selected_wallpaper)
 
-def get_random_wallpaper():# takes random wallpaper
+def random_wallpaper():# takes random wallpaper
     program_dir = os.path.dirname(os.path.abspath(__file__))
     wallpaper_dir = os.path.join(program_dir, "Wallpapers")
     wallpaper_files = [ f for f in os.listdir(wallpaper_dir) if f.endswith(".jpg")]  # List of files with .jpg extension in the folder
     num_wallpapers = len(wallpaper_files)  # Number of wallpapers files
     random_index = random.randint(0, num_wallpapers - 1)# Draw an index of one of the wallpapers
     selected_wallpaper = wallpaper_files[random_index]  # selected wallpaper
-    return wallpaper_dir, selected_wallpaper
+    loading_animation()  
+    set_wallpaper(wallpaper_dir, selected_wallpaper)
 
-def get_day_wallpaper(): # Takes random wallpaper from wallpapers that contains "d" MORE INFO IN .TXT
+def day_wallpaper(): # Takes random wallpaper from wallpapers that contains "d" MORE INFO IN .TXT
     program_dir = os.path.dirname(os.path.abspath(__file__))
     wallpaper_dir = os.path.join(program_dir, "Wallpapers")
     wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith(".jpg") and "d" in f.lower()]  # List of files with .jpg extension in the folder,
@@ -94,9 +99,10 @@ def get_day_wallpaper(): # Takes random wallpaper from wallpapers that contains 
         return None
     random_index = random.randint(0, num_wallpapers - 1)  # Draw an index of one of the wallpapers
     selected_wallpaper = wallpaper_files[random_index]  # Selected wallpaper
-    return wallpaper_dir, selected_wallpaper
+    loading_animation()  
+    set_wallpaper(wallpaper_dir, selected_wallpaper)
 
-def get_night_wallpaper():# Takes random wallpaper from wallpapers that contains "n" MORE INFO IN .TXT
+def night_wallpaper():# Takes random wallpaper from wallpapers that contains "n" MORE INFO IN .TXT
     program_dir = os.path.dirname(os.path.abspath(__file__))
     wallpaper_dir = os.path.join(program_dir, "Wallpapers")
     wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith(".jpg") and "n" in f.lower()]  # List of files with .jpg extension in the folder
@@ -105,12 +111,13 @@ def get_night_wallpaper():# Takes random wallpaper from wallpapers that contains
         return None
     random_index = random.randint(0, num_wallpapers - 1)  # Draw an index of one of the wallpapers
     selected_wallpaper = wallpaper_files[random_index]  # Selected wallpaper
-    return wallpaper_dir, selected_wallpaper
+    loading_animation()  # random
+    set_wallpaper(wallpaper_dir, selected_wallpaper)
 
 
 
 def q_again(): # Change wallpaper?
-    q= input(design()+"If you want to change wallpaper again, type anything\n                If not, press [ENTER]\n")
+    q= input(design()+" If you want to change wallpaper again, type anything\n                If not, press [ENTER]\n")
     if q=="":
         return False # Close program
     else:
@@ -123,7 +130,7 @@ def all_in():
         if i == 1:# I know what to do with these spaces yet :C
             print(design()+"\n                  [Wallpaper Changer]\n             What do you want to do today?"+colored("\n           If you have a problem Press [ENTER]\n","light_blue")+design())  # first_time_info
         else:
-            print("           If you decide, write what to do :3"+colored("\n           If you have a problem Press [ENTER]\n","light_blue")+design())
+            print(design()+"\n           If you decide, write what to do :3"+colored("\n           If you have a problem Press [ENTER]\n","light_blue")+design())
 
         if i%5==0:# for debilizm
              clear_screen()
@@ -132,39 +139,24 @@ def all_in():
 
         user_input = input("")
         if user_input.lower() == "show":
-            clear_screen()
-            print(design()+"\n          File with wallpapers will pop up :3\n"+design())
-            i+=1
+            
             show_wallpapers()
         elif user_input == "":# Help Command
             clear_screen()
             print(design()+colored("\n         V You can enter the things below V","light_green")+colored("\n   rand","light_cyan"),"- chooses random wallpaper from available"+colored("\n   show","light_cyan"),"- opens a file_window with wallpapers to check\n   "+colored("party","light_cyan"),"- chooses one of my favorite wallpapers <3\n",
-                  "\n                 "+colored("V For eye health V","light_green"),"\n   "+colored("day","cyan")+" - chooses wallpaper that is good on the day\n   "+colored("night","cyan")+" - chooses wallpaper that is good in the night\n\n"+design())#HELP INFO 
+                  "\n                 "+colored("V For eye health V","light_green"),"\n   "+colored("day","cyan")+" - chooses wallpaper that is good on the day\n   "+colored("night","cyan")+" - chooses wallpaper that is good in the night")#HELP INFO 
             i += 1
             
         elif user_input.lower() == "rand":# Random
-            loading_animation()  
-            wallpaper_dir, selected_wallpaper = get_random_wallpaper()
-            set_wallpaper(wallpaper_dir, selected_wallpaper)
-    
-
+            random_wallpaper()
         elif user_input.lower() == "day":  # Cold colors + random
-            loading_animation()  
-            wallpaper_dir, selected_wallpaper = get_day_wallpaper()
-            set_wallpaper(wallpaper_dir, selected_wallpaper)
-
-
+            day_wallpaper()
         elif user_input.lower() == "night": # Warm colors - yellow red orange dark + random
-            loading_animation()  # random
-            wallpaper_dir, selected_wallpaper = get_night_wallpaper()
-            set_wallpaper(wallpaper_dir, selected_wallpaper)
+            night_wallpaper()
 
         elif user_input.lower() == "party":  # favorite wallpapers
-            loading_animation()  # random
-            wallpaper_dir, selected_wallpaper = get_party_wallpaper()
-            set_wallpaper(wallpaper_dir, selected_wallpaper)
+            party_wallpaper()
 
-            
         else:
             i+=1
             clear_screen()

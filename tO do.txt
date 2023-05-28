@@ -1,1 +1,5 @@
 tutorial jak co zrobić co importować i ustawiać
+design przerobić troche
+żeby po proszeniu o pomoc odrazu dało możliwość wpisywania komendy do wykonania ( rand , party itp )
+mozlwiosc wyboru szerokosci x wysokosci zdjęc które się wybierze
+REMEMBER wybór rezolution ? 
