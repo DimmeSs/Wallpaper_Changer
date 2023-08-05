@@ -2,6 +2,18 @@ import os
 from screeninfo import get_monitors
 import inquirer
 
+def load_selected_resolution():
+    try:
+        with open('selected_resolution.txt', 'r') as file:
+            resolution = file.read().strip()
+            if resolution in get_resolution_folders():
+                return resolution
+            else:
+                print("Zapisana rozdzielczość w pliku selected_resolution.txt jest nieprawidłowa. Wybierz folder ponownie.\n\n")
+                return None
+    except FileNotFoundError:
+        return None
+
 def get_screen_resolutions():
     monitors = get_monitors()
     resolutions = [f"Screen [{index + 1}] | {monitor.width}x{monitor.height}" for index, monitor in enumerate(monitors)]
@@ -15,7 +27,9 @@ def get_resolution_folders():
 
 def choose_resolution_folder():
     while True:
-        choices = get_resolution_folders() + ["Stwórz nowy folder"]
+        resolution_folders = get_resolution_folders()
+        sorted_folders = sorted(resolution_folders, key=lambda x: int(x.split('x')[0]))
+        choices = sorted_folders + ["Stwórz nowy folder"]
         questions = [
             inquirer.List('choice',
                           choices=choices,
@@ -36,20 +50,30 @@ def choose_resolution_folder():
         else:
             return choice
 
+def save_selected_resolution(resolution):
+    with open('selected_resolution.txt', 'w') as file:
+        file.write(resolution)
+    print(f"Zapisano wybraną rozdzielczość: {resolution} do pliku selected_resolution.txt")
 
-# -----------------------------------------------------------------------------------------------------
-print("Witaj w wallpaperchanger, Wybierz folder z rodzielczością w której są Tapety do twojego Ekranu")
+def main():
+    selected_resolution = load_selected_resolution()
 
-print("\nRozdzielczości ekranów na tym komputerze:")
-for resolution in get_screen_resolutions():
-    print(resolution)
+    if selected_resolution:
+        print("Witaj w programie :3")
+        print(f"Używana rozdzielczość: {selected_resolution}")
+    else:
+        print("\n------------------------------\n\nRozdzielczości ekranów na tym komputerze:\n")
+        for resolution in get_screen_resolutions():
+            print(resolution)
+        print("\n------------------------------\n")
+        print("Witaj w wallpaperchanger, Wybierz folder z rodzielczością w której są Tapety do twojego Ekranu")
+        
+        chosen_folder = choose_resolution_folder()
+        print(f"------------------------------\nWybrano folder: {chosen_folder}")
+        save_selected_resolution(chosen_folder)
+        main()
 
-# resolution_folders = get_resolution_folders()
-# print("\nDostępne foldery z rozdzielczościami:\n")
-# for folder in resolution_folders:
-#     print(" "+folder)
-print("\n------------------------------\n")
-chosen_folder = choose_resolution_folder()
-print(f"------------------------------\nWybrano folder: {chosen_folder}")
+    input("\nWcisnij enter aby zakonczyć")
 
-input("\nWcisnij enter aby zakonczyć")
+if __name__ == "__main__":
+    main()
