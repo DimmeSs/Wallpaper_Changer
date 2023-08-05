@@ -2,12 +2,26 @@ import os
 import inquirer
 import time
 import subprocess
+import itertools
+import ctypes
 import random
 from screeninfo import get_monitors
-
+#DESIGN
 def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
 
+def loading_animation():  # Little animation for drip <3
+    clear_screen()
+    dots = itertools.cycle([".", "..", "..."])
+    counter = 0
+    while counter < 3:  # Break after 3 dots
+        print(f"Loading{next(dots)}", end="\r")#Loading... Animation
+        time.sleep(0.5)
+        counter += 1
+    clear_screen()
+    print("// Wallpaper Changed \\\\\n"+"Have a nice Day <3")
+
+#DODAWANIE FOLDERU Z ROZDZIELCZOŚCIĄ
 def load_selected_resolution():
     try:
         with open('selected_resolution.txt', 'r') as file:
@@ -69,6 +83,14 @@ def save_selected_resolution(resolution):
     clear_screen()
 
 
+#USTAWIANIE TAPETY
+def set_wallpaper(wallpaper_dir, selected_wallpaper):
+    SPI_SETDESKWALLPAPER = 20
+    ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, os.path.join(wallpaper_dir, selected_wallpaper), 3)
+    time.sleep(1)
+
+
+#GŁOWNE MENU
 def main_menu():
     options = [
         "Favorite",
@@ -103,10 +125,34 @@ def show_wallpapers(selected_resolution):
         else:
             print("[ERROR] WTF")
 
+#OPCJA [FAVORITE]
+def favorite_wallpaper(selected_resolution):
+    program_dir = os.path.dirname(os.path.abspath(__file__))
+    wallpaper_dir = os.path.join(program_dir, selected_resolution)
+    wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith(".jpg") and "!" in f.lower()]
+    num_wallpapers = len(wallpaper_files)
+    if num_wallpapers == 0:
+        print("[ERROR] WTF")
+        return None
+
+    random_index = random.randint(0, num_wallpapers - 1)
+    loading_animation()
+    selected_wallpaper = wallpaper_files[random_index]
+    set_wallpaper(wallpaper_dir, selected_wallpaper)
+    while True:
+        user_input = input("\nWciśnij enter, aby wrócić do menu głównego lub 'q', aby wyjść:\n").strip().lower()
+        if user_input == "":
+            return "menu"
+        elif user_input == "q":
+            return "quit"
+        else:
+            print("[ERROR] WTF")
+
+#OPCJA[CHANGE RESOLUTION]
 def change_resolution():
     try:
         os.remove('selected_resolution.txt')
-        print("Rozdzielczość została zresetowana. Uruchamiam program ponownie...")
+        print("Rozdzielczość została zresetowana. \nUruchamiam program ponownie...")
         time.sleep(2)
         clear_screen()
         main()
@@ -115,6 +161,8 @@ def change_resolution():
         time.sleep(2)
         clear_screen()
         main()
+
+
 
 #GŁOWNY PROG
 def main():
@@ -136,8 +184,20 @@ def main():
                 print("Dziękuje za skorzystanie z programu ~ Sz.S")
                 time.sleep(3)
                 exit()
-        if chosen_option == "Change_resolution":
+
+        elif chosen_option == "Change_resolution":
             change_resolution()
+
+        elif chosen_option == "Favorite":
+            action = favorite_wallpaper(selected_resolution)
+            if action == "menu":
+                clear_screen()
+                main()
+            elif action == "quit":
+                clear_screen()
+                print("Dziękuje za skorzystanie z programu ~ Sz.S")
+                time.sleep(3)
+                exit()
 
         input("\n\nKONIEC")
     else:
