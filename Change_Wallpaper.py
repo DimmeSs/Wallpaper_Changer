@@ -1,7 +1,12 @@
 import os
 import inquirer
 import time
+import subprocess
+import random
 from screeninfo import get_monitors
+
+def clear_screen():
+    os.system("cls" if os.name == "nt" else "clear")
 
 def load_selected_resolution():
     try:
@@ -33,6 +38,7 @@ def choose_resolution_folder():
         choices = sorted_folders + ["Stwórz nowy folder"]
         questions = [
             inquirer.List('choice',
+                          message="Wybierz opcję",
                           choices=choices,
                           ),
         ]
@@ -52,7 +58,7 @@ def choose_resolution_folder():
             return choice
 
 def save_selected_resolution(resolution):
-    os.system('cls' if os.name == 'nt' else 'clear')
+    clear_screen()
     with open('selected_resolution.txt', 'w') as file:
         file.write(resolution)
     print(f"Zapisano wybraną rozdzielczość: {resolution} do pliku selected_resolution.txt", end="")
@@ -60,15 +66,66 @@ def save_selected_resolution(resolution):
         print(f"\rPrzekierowywanie do programu za {i} sekund{'y' if i == 1 else '...'}", end="")
         time.sleep(1)
     print() # Aby oczyścić linię
-    os.system('cls' if os.name == 'nt' else 'clear')
+    clear_screen()
 
+
+def main_menu():
+    options = [
+        "Favorite",
+        "Day",
+        "Night",
+        "Random",
+        "Show_Wallpapers",
+        "Change_resolution",
+    ]
+    questions = [
+        inquirer.List('option',
+                      message="Wybierz opcję:",
+                      choices=options,
+                      ),
+    ]
+    answers = inquirer.prompt(questions)
+    return answers['option']
+
+# OPCJA [SHOW_WALLPAPERS]
+def show_wallpapers(selected_resolution):
+    clear_screen()
+    print("\nFile with wallpapers will pop up :3\n")
+    program_dir = os.path.dirname(os.path.abspath(__file__))
+    wallpaper_dir = os.path.join(program_dir, selected_resolution)
+    subprocess.Popen(f'explorer "{wallpaper_dir}"')
+    while True:
+        user_input = input("\nWciśnij enter, aby wrócić do menu głównego lub 'q', aby wyjść:\n").strip().lower()
+        if user_input == "":
+            return "menu"
+        elif user_input == "q":
+            return "quit"
+        else:
+            print("[ERROR] WTF")
+
+
+#GŁOWNY PROG
 def main():
     selected_resolution = load_selected_resolution()
 
     if selected_resolution:
         print("Witaj w programie :3")
-        print(f"Używana rozdzielczość: {selected_resolution}")
-        input("\nWcisnij enter aby zakonczyć")
+        print(f"Używana rozdzielczość: {selected_resolution}\n------------------------------\n")
+        chosen_option = main_menu()
+        print(f"\n------------------------------\nWybrano opcję: {chosen_option}")
+
+        if chosen_option == "Show_Wallpapers":
+            action = show_wallpapers(selected_resolution)
+            if action == "menu":
+                clear_screen()
+                main()
+            elif action == "quit":
+                clear_screen()
+                print("Dziękuje za skorzystanie z programu ~ Sz.S")
+                time.sleep(3)
+                exit()
+
+        input("\n\nKONIEC")
     else:
         print("\n------------------------------\n\nRozdzielczości ekranów na tym komputerze:\n")
         for resolution in get_screen_resolutions():
@@ -81,5 +138,6 @@ def main():
         save_selected_resolution(chosen_folder)
         main()
 
+# START
 if __name__ == "__main__":
     main()
