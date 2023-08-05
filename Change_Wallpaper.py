@@ -48,8 +48,10 @@ def get_resolution_folders():
 def choose_resolution_folder():
     while True:
         resolution_folders = get_resolution_folders()
-        sorted_folders = sorted(resolution_folders, key=lambda x: int(x.split('x')[0]))
-        choices =  ["Stwórz nowy folder"] +sorted_folders
+        # Filtrujemy foldery, które mają prawidłowy format rozdzielczości
+        valid_resolution_folders = [folder for folder in resolution_folders if folder.split('x')[0].isdigit() and folder.split('x')[1].isdigit()]
+        sorted_folders = sorted(valid_resolution_folders, key=lambda x: int(x.split('x')[0]))
+        choices = ["Stwórz nowy folder"] + sorted_folders
         questions = [
             inquirer.List('choice',
                           message="Wybierz opcję",
@@ -60,16 +62,26 @@ def choose_resolution_folder():
         choice = answers['choice']
 
         if choice == "Stwórz nowy folder":
-            resolution = input("Wprowadź rozdzielczość dla nowego folderu (np. 1300x1400): ")
-            if 'x' in resolution:
+            resolution = input("Wprowadź rozdzielczość dla nowego folderu (np. 1300x1400)\n[Warning] Rozdzielczość nie może posiadać liter : ")
+            if 'x' in resolution and resolution.split('x')[0].isdigit() and resolution.split('x')[1].isdigit():
                 new_folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), resolution)
                 os.makedirs(new_folder_path, exist_ok=True)
+                for subfolder in ["favorite", "day", "night"]:
+                    os.makedirs(os.path.join(new_folder_path, subfolder), exist_ok=True)
                 print(f"Stworzono nowy folder: {resolution}")
                 return resolution
             else:
+                clear_screen()
                 print("Nieprawidłowy format rozdzielczości. Spróbuj ponownie.")
+                print("\n------------------------------\n\nRozdzielczości ekranów na tym komputerze:\n")
+                for resolution in get_screen_resolutions():
+                    print(resolution)
+                print("\n------------------------------\n")
+
+                
         else:
             return choice
+
 
 def save_selected_resolution(resolution):
     clear_screen()
@@ -128,8 +140,8 @@ def show_wallpapers(selected_resolution):
 #OPCJA [FAVORITE]
 def favorite_wallpaper(selected_resolution):
     program_dir = os.path.dirname(os.path.abspath(__file__))
-    wallpaper_dir = os.path.join(program_dir, selected_resolution)
-    wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith(".jpg") and "!" in f.lower()]
+    wallpaper_dir = os.path.join(program_dir, selected_resolution, "favorite")
+    wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith((".jpg",".png"))]
     num_wallpapers = len(wallpaper_files)
     if num_wallpapers == 0:
         print("[ERROR] WTF")
@@ -164,9 +176,8 @@ def change_resolution():
 # OPCJA [DAY]
 def day_wallpaper(selected_resolution):
     program_dir = os.path.dirname(os.path.abspath(__file__))
-    wallpaper_dir = os.path.join(program_dir, selected_resolution)
-    wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith(".jpg") and "d" in f.lower()]
-
+    wallpaper_dir = os.path.join(program_dir, selected_resolution, "day")
+    wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith((".jpg", ".png"))]
     num_wallpapers = len(wallpaper_files)
     if num_wallpapers == 0:
         print("[ERROR] WTF")
@@ -188,9 +199,8 @@ def day_wallpaper(selected_resolution):
 # OPCJA [NiGHT]
 def night_wallpaper(selected_resolution):
     program_dir = os.path.dirname(os.path.abspath(__file__))
-    wallpaper_dir = os.path.join(program_dir, selected_resolution)
-    wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith(".jpg") and "n" in f.lower()]
-
+    wallpaper_dir = os.path.join(program_dir, selected_resolution, "night")
+    wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith((".jpg", ".png"))]
     num_wallpapers = len(wallpaper_files)
     if num_wallpapers == 0:
         print("[ERROR] WTF")
@@ -213,7 +223,10 @@ def night_wallpaper(selected_resolution):
 def random_wallpaper(selected_resolution):
     program_dir = os.path.dirname(os.path.abspath(__file__))
     wallpaper_dir = os.path.join(program_dir, selected_resolution)
-    wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith(".jpg")]
+    subfolders = ["favorite", "day", "night"]
+    chosen_subfolder = random.choice(subfolders)
+    chosen_wallpaper_dir = os.path.join(wallpaper_dir, chosen_subfolder)
+    wallpaper_files = [f for f in os.listdir(chosen_wallpaper_dir) if f.endswith((".jpg", ".png"))]
 
     num_wallpapers = len(wallpaper_files)
     if num_wallpapers == 0:
@@ -224,7 +237,7 @@ def random_wallpaper(selected_resolution):
     loading_animation()
     selected_wallpaper = wallpaper_files[random_index]
 
-    set_wallpaper(wallpaper_dir, selected_wallpaper)
+    set_wallpaper(chosen_wallpaper_dir, selected_wallpaper)
     while True:
         user_input = input("\nWciśnij enter, aby wrócić do menu głównego lub 'q', aby wyjść:\n").strip().lower()
         if user_input == "":

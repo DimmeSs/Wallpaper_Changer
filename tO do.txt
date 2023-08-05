@@ -4,21 +4,10 @@ READ.ME
 
 tutorial jak co zrobić co importować i ustawiać
 
-----
-działanie 
+opcja POBIERZ tapety 
 
+wyswietla linki do tapet i umożliwia ci wybranie któregoś z tych linków i otwrozy ci przeglądarkę i stronę którą wybrałeś
 
-Pierwsze uruchomienie prosi o wybranie folderu z którego byś brał tapety !!!!wybierasz strzałkami/ wyświetla poniżej jakie masz ekrany i jakiej rozdzielczości / jeżeli uzytkownik chce dodać własny folder z rozdzielczością musi wpisać : create rozdzielczość
-
-po wybraniu pierwszy raz zapisuje tą rozdzielczość w txt selected_resolution.txt żeby po kolejnym właczeniu programu skipneło etap wybierania folderu jeżeli już jest w tym txt coś wpisane żeby odrazu wybieralo ten folder
-
-
-
-później masz menu i tam masz opcje :Favorite ( plik ze zdjeciem bedzie nazwany !) Day(d) Night(n) Random(wybierze losowe zdjecie ) Show_Wallpapers(otworzy explorator plików ze zdjęciami w którym są tapety) Change_rezolution(po wybraniu usunie tekst z pliku txt i właczy ponownie program)     i możesz wybrać opcje strzałkami 
-
-Po wciśnięciu Enter -> loading ... -> wallpaper changed -> jeżeli chcesz znowu zmienić tapete wciśnij ENTER jeżeli nie -> q
-
-w momencie kiedy ktoś zrobi coś źle wypisze [ERROR] WTF 
 
 
 
