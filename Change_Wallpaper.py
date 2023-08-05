@@ -15,7 +15,7 @@ def load_selected_resolution():
             if resolution in get_resolution_folders():
                 return resolution
             else:
-                print("Zapisana rozdzielczość w pliku selected_resolution.txt jest nieprawidłowa. Wybierz folder ponownie.\n\n")
+                print("Witaj w WallpaperChange")
                 return None
     except FileNotFoundError:
         return None
@@ -35,7 +35,7 @@ def choose_resolution_folder():
     while True:
         resolution_folders = get_resolution_folders()
         sorted_folders = sorted(resolution_folders, key=lambda x: int(x.split('x')[0]))
-        choices = sorted_folders + ["Stwórz nowy folder"]
+        choices =  ["Stwórz nowy folder"] +sorted_folders
         questions = [
             inquirer.List('choice',
                           message="Wybierz opcję",
@@ -62,7 +62,7 @@ def save_selected_resolution(resolution):
     with open('selected_resolution.txt', 'w') as file:
         file.write(resolution)
     print(f"Zapisano wybraną rozdzielczość: {resolution} do pliku selected_resolution.txt", end="")
-    for i in range(5, 0, -1):
+    for i in range(4, 0, -1):
         print(f"\rPrzekierowywanie do programu za {i} sekund{'y' if i == 1 else '...'}", end="")
         time.sleep(1)
     print() # Aby oczyścić linię
@@ -80,7 +80,7 @@ def main_menu():
     ]
     questions = [
         inquirer.List('option',
-                      message="Wybierz opcję:",
+                      message="Wybierz opcję",
                       choices=options,
                       ),
     ]
@@ -103,6 +103,18 @@ def show_wallpapers(selected_resolution):
         else:
             print("[ERROR] WTF")
 
+def change_resolution():
+    try:
+        os.remove('selected_resolution.txt')
+        print("Rozdzielczość została zresetowana. Uruchamiam program ponownie...")
+        time.sleep(2)
+        clear_screen()
+        main()
+    except FileNotFoundError:
+        print("[ERROR] WTF - Nie znaleziono pliku z zapisaną rozdzielczością.")
+        time.sleep(2)
+        clear_screen()
+        main()
 
 #GŁOWNY PROG
 def main():
@@ -124,6 +136,8 @@ def main():
                 print("Dziękuje za skorzystanie z programu ~ Sz.S")
                 time.sleep(3)
                 exit()
+        if chosen_option == "Change_resolution":
+            change_resolution()
 
         input("\n\nKONIEC")
     else:
@@ -131,7 +145,7 @@ def main():
         for resolution in get_screen_resolutions():
             print(resolution)
         print("\n------------------------------\n")
-        print("Witaj w wallpaperchanger, Wybierz folder z rodzielczością w której są Tapety do twojego Ekranu")
+        print("Wybierz folder z rodzielczością, w której są Tapety do twojego ekranu\n")
         
         chosen_folder = choose_resolution_folder()
         print(f"------------------------------\nWybrano folder: {chosen_folder}")
