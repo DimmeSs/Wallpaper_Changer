@@ -1,13 +1,14 @@
-import os
-import inquirer
-import time
-import subprocess
-import itertools
-import ctypes
-import webbrowser
-import random
+import os, inquirer, time, subprocess, itertools, ctypes, webbrowser, random
 from screeninfo import get_monitors
+from termcolor import colored
+
 #DESIGN
+os.system("mode con: cols=80 lines=30")
+
+def design():  #definition that returns characters for cmd design
+    a = "\n" + "="*80 +"\n"
+    return a
+
 def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
 
@@ -37,7 +38,7 @@ def load_selected_resolution():
 
 def get_screen_resolutions():
     monitors = get_monitors()
-    resolutions = [f"Screen [{index + 1}] | {monitor.width}x{monitor.height}" for index, monitor in enumerate(monitors)]
+    resolutions = [f"   Screen [{index + 1}] | {monitor.width}x{monitor.height}" for index, monitor in enumerate(monitors)]
     return resolutions
 
 def get_resolution_folders():
@@ -52,18 +53,18 @@ def choose_resolution_folder():
         # Filtrujemy foldery, które mają prawidłowy format rozdzielczości
         valid_resolution_folders = [folder for folder in resolution_folders if folder.split('x')[0].isdigit() and folder.split('x')[1].isdigit()]
         sorted_folders = sorted(valid_resolution_folders, key=lambda x: int(x.split('x')[0]))
-        choices = ["Stwórz nowy folder"] + sorted_folders
+        choices = ["Stwórz Nowy Folder"] + sorted_folders
         questions = [
             inquirer.List('choice',
-                          message="Wybierz opcję",
+                          message="Wciśnij [ENTER] aby zatwierdzić wybór",
                           choices=choices,
                           ),
         ]
         answers = inquirer.prompt(questions)
         choice = answers['choice']
 
-        if choice == "Stwórz nowy folder":
-            resolution = input("Wprowadź rozdzielczość dla nowego folderu (np. 1300x1400)\n[Warning] Rozdzielczość nie może posiadać liter : ")
+        if choice == "Stwórz Nowy Folder":
+            resolution = input("="*80 +"\n\n Podaj wymiary dla nowego folderu ( Przykładowo: 1280x720 )\n Rozmiar nie może zawierać liter: ")
             if 'x' in resolution and resolution.split('x')[0].isdigit() and resolution.split('x')[1].isdigit():
                 new_folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), resolution)
                 os.makedirs(new_folder_path, exist_ok=True)
@@ -73,11 +74,11 @@ def choose_resolution_folder():
                 return resolution
             else:
                 clear_screen()
-                print("Nieprawidłowy format rozdzielczości. Spróbuj ponownie.")
-                print("\n------------------------------\n\nRozdzielczości ekranów na tym komputerze:\n")
+                print(design()+colored("\n [ERROR] Nieprawidłowy format rozdzielczości","light_red"))
+                print(design()+"\n Rozdzielczość Twoich Ekranów:\n")
                 for resolution in get_screen_resolutions():
                     print(resolution)
-                print("\n------------------------------\n")
+                print(design())
 
                 
         else:
@@ -88,11 +89,10 @@ def save_selected_resolution(resolution):
     clear_screen()
     with open('selected_resolution.txt', 'w') as file:
         file.write(resolution)
-    print(f"Zapisano wybraną rozdzielczość: {resolution} do pliku selected_resolution.txt", end="")
+    print(colored(design()+f"\n Zapisano wybraną rozdzielczość: {resolution} do pliku .TXT","light_green"))
     for i in range(4, 0, -1):
-        print(f"\rPrzekierowywanie do programu za {i} sekund{'y' if i == 1 else '...'}", end="")
+        print(f"\r Przekierowywanie do programu za {i} sekund{'y' if i == 1 else '...'}", end="")
         time.sleep(1)
-    print() # Aby oczyścić linię
     clear_screen()
 
 
@@ -284,9 +284,9 @@ def main():
 
     if selected_resolution:
         print("Witaj w programie :3")
-        print(f"Używana rozdzielczość: {selected_resolution}\n------------------------------\n")
+        print(f"Używana rozdzielczość: {selected_resolution}"+design())
         chosen_option = main_menu()
-        print(f"\n------------------------------\nWybrano opcję: {chosen_option}")
+        print(design()+f"Wybrano opcję: {chosen_option}")
 # ---------
         if chosen_option == "Show_Wallpapers":
             action = show_wallpapers(selected_resolution)
@@ -361,14 +361,14 @@ def main():
 
         input("\n\nKONIEC")
     else:
-        print("\n------------------------------\n\nRozdzielczości ekranów na tym komputerze:\n")
+        print(design()+"\n Rozdzielczości ekranów na tym komputerze:\n")
         for resolution in get_screen_resolutions():
             print(resolution)
-        print("\n------------------------------\n")
-        print("Wybierz folder z rodzielczością, w której są Tapety do twojego ekranu\n")
+        print(design())
+        print(" Wybierz folder z Tapetami, które mają być jako tło na twoim ekranie\n")
         
         chosen_folder = choose_resolution_folder()
-        print(f"------------------------------\nWybrano folder: {chosen_folder}")
+        print(design()+f"Wybrano folder: {chosen_folder}")
         save_selected_resolution(chosen_folder)
         main()
 
