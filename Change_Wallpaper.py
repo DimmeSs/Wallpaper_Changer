@@ -4,6 +4,7 @@ import time
 import subprocess
 import itertools
 import ctypes
+import webbrowser
 import random
 from screeninfo import get_monitors
 #DESIGN
@@ -111,6 +112,7 @@ def main_menu():
         "Random",
         "Show_Wallpapers",
         "Change_resolution",
+        "Download Wallpapers"
     ]
     questions = [
         inquirer.List('option',
@@ -120,7 +122,7 @@ def main_menu():
     ]
     answers = inquirer.prompt(questions)
     return answers['option']
-
+ 
 # OPCJA [SHOW_WALLPAPERS]
 def show_wallpapers(selected_resolution):
     clear_screen()
@@ -137,15 +139,16 @@ def show_wallpapers(selected_resolution):
         else:
             print("[ERROR] WTF")
 
-#OPCJA [FAVORITE]
+# OPCJA [FAVORITE]
 def favorite_wallpaper(selected_resolution):
     program_dir = os.path.dirname(os.path.abspath(__file__))
     wallpaper_dir = os.path.join(program_dir, selected_resolution, "favorite")
     wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith((".jpg",".png"))]
     num_wallpapers = len(wallpaper_files)
     if num_wallpapers == 0:
-        print("[ERROR] WTF")
-        return None
+        print("\n[ERROR] Nie ma żadnej tapety do wybrania\n Uzupełnij Folder Zdjęciami")
+        time.sleep(3)
+        return "menu"
 
     random_index = random.randint(0, num_wallpapers - 1)
     loading_animation()
@@ -160,7 +163,7 @@ def favorite_wallpaper(selected_resolution):
         else:
             print("[ERROR] WTF")
 
-#OPCJA[CHANGE RESOLUTION]
+# OPCJA [CHANGE RESOLUTION]
 def change_resolution():
     try:
         os.remove('selected_resolution.txt')
@@ -180,8 +183,9 @@ def day_wallpaper(selected_resolution):
     wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith((".jpg", ".png"))]
     num_wallpapers = len(wallpaper_files)
     if num_wallpapers == 0:
-        print("[ERROR] WTF")
-        return None
+        print("[ERROR] Nie ma żadnej tapety do wybrania\n Uzupełnij Folder Zdjęciami")
+        time.sleep(3)
+        return "menu"
 
     random_index = random.randint(0, num_wallpapers - 1)
     loading_animation()
@@ -203,8 +207,9 @@ def night_wallpaper(selected_resolution):
     wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith((".jpg", ".png"))]
     num_wallpapers = len(wallpaper_files)
     if num_wallpapers == 0:
-        print("[ERROR] WTF")
-        return None
+        print("[ERROR] Nie ma żadnej tapety do wybrania\n Uzupełnij Folder Zdjęciami")
+        time.sleep(3)
+        return "menu"
 
     random_index = random.randint(0, num_wallpapers - 1)
     loading_animation()
@@ -219,7 +224,7 @@ def night_wallpaper(selected_resolution):
             return "quit"
         else:
             print("[ERROR] WTF")
-# OPCJA RANDOM
+# OPCJA [RANDOM]
 def random_wallpaper(selected_resolution):
     program_dir = os.path.dirname(os.path.abspath(__file__))
     wallpaper_dir = os.path.join(program_dir, selected_resolution)
@@ -230,8 +235,9 @@ def random_wallpaper(selected_resolution):
 
     num_wallpapers = len(wallpaper_files)
     if num_wallpapers == 0:
-        print("[ERROR] WTF")
-        return None
+        print("[ERROR] Nie ma żadnej tapety do wybrania\n Uzupełnij Folder Zdjęciami")
+        time.sleep(3)
+        return "menu"
 
     random_index = random.randint(0, num_wallpapers - 1)
     loading_animation()
@@ -246,7 +252,31 @@ def random_wallpaper(selected_resolution):
             return "quit"
         else:
             print("[ERROR] WTF")
-
+# OPCJA [Download Wallpapers]
+def download_wallpapers():
+    clear_screen()
+    questions = [
+        inquirer.List('choice',
+                      message="Wybierz Strone",
+                      choices=['Wallpapers.com', 'Wallpapercave.com', 'Hdqwalls.com'],
+                      ),
+    ]
+    answers = inquirer.prompt(questions)
+    if answers["choice"] == 'Wallpapers.com':
+        webbrowser.open('https://wallpapers.com/')
+    elif answers["choice"] == 'Wallpapercave.com':
+        webbrowser.open('https://wallpapercave.com/')
+    elif answers["choice"] == 'Hdqwalls.com':
+        webbrowser.open('https://hdqwalls.com/')
+    while True:
+        user_input = input("\nWciśnij enter, aby wrócić do menu głównego lub 'q', aby wyjść:\n").strip().lower()
+        if user_input == "":
+            return "menu"
+        elif user_input == "q":
+            return "quit"
+        else:
+            print("[ERROR] WTF")
+   
 
 #GŁOWNY PROG
 def main():
@@ -260,6 +290,17 @@ def main():
 # ---------
         if chosen_option == "Show_Wallpapers":
             action = show_wallpapers(selected_resolution)
+            if action == "menu":
+                clear_screen()
+                main()
+            elif action == "quit":
+                clear_screen()
+                print("Dziękuje za skorzystanie z programu ~ Sz.S")
+                time.sleep(3)
+                exit()
+# ---------
+        elif chosen_option =="Download Wallpapers":
+            action = download_wallpapers()
             if action == "menu":
                 clear_screen()
                 main()
