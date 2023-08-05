@@ -1,6 +1,7 @@
 import os
-from screeninfo import get_monitors
 import inquirer
+import time
+from screeninfo import get_monitors
 
 def load_selected_resolution():
     try:
@@ -51,9 +52,15 @@ def choose_resolution_folder():
             return choice
 
 def save_selected_resolution(resolution):
+    os.system('cls' if os.name == 'nt' else 'clear')
     with open('selected_resolution.txt', 'w') as file:
         file.write(resolution)
-    print(f"Zapisano wybraną rozdzielczość: {resolution} do pliku selected_resolution.txt")
+    print(f"Zapisano wybraną rozdzielczość: {resolution} do pliku selected_resolution.txt", end="")
+    for i in range(5, 0, -1):
+        print(f"\rPrzekierowywanie do programu za {i} sekund{'y' if i == 1 else '...'}", end="")
+        time.sleep(1)
+    print() # Aby oczyścić linię
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def main():
     selected_resolution = load_selected_resolution()
@@ -61,6 +68,7 @@ def main():
     if selected_resolution:
         print("Witaj w programie :3")
         print(f"Używana rozdzielczość: {selected_resolution}")
+        input("\nWcisnij enter aby zakonczyć")
     else:
         print("\n------------------------------\n\nRozdzielczości ekranów na tym komputerze:\n")
         for resolution in get_screen_resolutions():
@@ -72,8 +80,6 @@ def main():
         print(f"------------------------------\nWybrano folder: {chosen_folder}")
         save_selected_resolution(chosen_folder)
         main()
-
-    input("\nWcisnij enter aby zakonczyć")
 
 if __name__ == "__main__":
     main()
