@@ -14,14 +14,27 @@ def get_resolution_folders():
     return resolution_folders
 
 def choose_resolution_folder():
-    questions = [
-        inquirer.List('folder',
-                      choices=get_resolution_folders(),
-                      ),
-    ]
-    answers = inquirer.prompt(questions)
-    return answers['folder']
+    while True:
+        choices = get_resolution_folders() + ["Stwórz nowy folder"]
+        questions = [
+            inquirer.List('choice',
+                          choices=choices,
+                          ),
+        ]
+        answers = inquirer.prompt(questions)
+        choice = answers['choice']
 
+        if choice == "Stwórz nowy folder":
+            resolution = input("Wprowadź rozdzielczość dla nowego folderu (np. 1300x1400): ")
+            if 'x' in resolution:
+                new_folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), resolution)
+                os.makedirs(new_folder_path, exist_ok=True)
+                print(f"Stworzono nowy folder: {resolution}")
+                return resolution
+            else:
+                print("Nieprawidłowy format rozdzielczości. Spróbuj ponownie.")
+        else:
+            return choice
 
 
 # -----------------------------------------------------------------------------------------------------
