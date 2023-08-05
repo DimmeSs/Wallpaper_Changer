@@ -209,6 +209,30 @@ def night_wallpaper(selected_resolution):
             return "quit"
         else:
             print("[ERROR] WTF")
+# OPCJA RANDOM
+def random_wallpaper(selected_resolution):
+    program_dir = os.path.dirname(os.path.abspath(__file__))
+    wallpaper_dir = os.path.join(program_dir, selected_resolution)
+    wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith(".jpg")]
+
+    num_wallpapers = len(wallpaper_files)
+    if num_wallpapers == 0:
+        print("[ERROR] WTF")
+        return None
+
+    random_index = random.randint(0, num_wallpapers - 1)
+    loading_animation()
+    selected_wallpaper = wallpaper_files[random_index]
+
+    set_wallpaper(wallpaper_dir, selected_wallpaper)
+    while True:
+        user_input = input("\nWciśnij enter, aby wrócić do menu głównego lub 'q', aby wyjść:\n").strip().lower()
+        if user_input == "":
+            return "menu"
+        elif user_input == "q":
+            return "quit"
+        else:
+            print("[ERROR] WTF")
 
 
 #GŁOWNY PROG
@@ -268,6 +292,19 @@ def main():
                 time.sleep(3)
                 exit()
 # ---------
+        elif chosen_option == "Random":
+            action = random_wallpaper(selected_resolution)
+            if action == "menu":
+                clear_screen()
+                main()
+            elif action == "quit":
+                clear_screen()
+                print("Dziękuje za skorzystanie z programu ~ Sz.S")
+                time.sleep(3)
+                exit()
+# ---------
+
+
         input("\n\nKONIEC")
     else:
         print("\n------------------------------\n\nRozdzielczości ekranów na tym komputerze:\n")
