@@ -59,7 +59,7 @@ def choose_resolution_folder():
         choices = ["Stwórz Nowy Folder"] + sorted_folders
         questions = [
             inquirer.List('choice',
-                          message="Wciśnij [ENTER] aby zatwierdzić wybór",
+                          message=colored("Wciśnij [ENTER] aby zatwierdzić wybór","light_blue"),
                           choices=choices,
                           ),
         ]
@@ -77,7 +77,8 @@ def choose_resolution_folder():
                 return resolution
             else:
                 clear_screen()
-                print(design()+colored("\n [ERROR] Nieprawidłowy format rozdzielczości","light_red"))
+                print("\n"+"="*31+colored(" Wallpaper Change ","light_cyan")+"="*31+"\n")
+                print(" "*18+colored("[ERROR] Nieprawidłowy format rozdzielczości","light_red"))
                 print(design()+"\n Rozdzielczość Twoich Ekranów:\n")
                 for resolution in get_screen_resolutions():
                     print(resolution)
@@ -92,9 +93,10 @@ def save_selected_resolution(resolution):
     clear_screen()
     with open('selected_resolution.txt', 'w') as file:
         file.write(resolution)
-    print(colored(design()+f"\n Zapisano wybraną rozdzielczość: {resolution} do pliku .TXT","light_green"))
+    print(design())
+    print(colored(" "*20+f"Zapisano wybraną rozdzielczość: {resolution} ","light_green"))
     for i in range(4, 0, -1):
-        print(f"\r Przekierowywanie do programu za {i} sekund{'y' if i == 1 else '...'}", end="")
+        print(f"\r                   Przekierowywanie do programu za {i} sekund{'e...' if i == 1 else 'y...'}", end="")
         time.sleep(1)
     clear_screen()
 
@@ -113,9 +115,9 @@ def main_menu():
         "Day",
         "Night",
         "Random",
+        "Download Wallpapers",
         "Show_Wallpapers",
-        "Change_resolution",
-        "Download Wallpapers"
+        "Change_resolution"
     ]
     questions = [
         inquirer.List('option',
@@ -142,7 +144,10 @@ def show_wallpapers(selected_resolution):
         elif user_input == "q":
             return "quit"
         else:
-            print("[ERROR] WTF")
+            clear_screen()
+            print("\n"+"="*31+colored(" Wallpaper Change ","light_cyan")+"="*31+"\n")
+            print(colored(" "*15+"[ERROR] Wpisano niepoprawne dane. Spróbuj ponownie","red"))
+            print("\n" + "="*80)
 
 # OPCJA [FAVORITE]
 def favorite_wallpaper(selected_resolution):
@@ -166,18 +171,23 @@ def favorite_wallpaper(selected_resolution):
         elif user_input == "q":
             return "quit"
         else:
-            print("[ERROR] WTF")
+            clear_screen()
+            print("\n"+"="*31+colored(" Wallpaper Change ","light_cyan")+"="*31+"\n")
+            print(colored(" "*15+"[ERROR] Wpisano niepoprawne dane. Spróbuj ponownie","red"))
+            print("\n" + "="*80)
 
 # OPCJA [CHANGE RESOLUTION]
 def change_resolution():
     try:
+        time.sleep(1)
+        clear_screen()
         os.remove('selected_resolution.txt')
-        print("Rozdzielczość została zresetowana. \nUruchamiam program ponownie...")
+        print("\n"+" "*19+" [Uwaga] Rozdzielczość została zresetowana.\n"+" "*24+"Uruchamianie ponownie programu...")
         time.sleep(2)
         clear_screen()
         main()
     except FileNotFoundError:
-        print("[ERROR] WTF - Nie znaleziono pliku z zapisaną rozdzielczością.")
+        print("[ERROR] WTF - Nie znaleziono pliku z zapisaną rozdzielczością. Zaraz wyświetli Ci się menu wybierania Rozdzielczości")
         time.sleep(2)
         clear_screen()
         main()
@@ -188,7 +198,7 @@ def day_wallpaper(selected_resolution):
     wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith((".jpg", ".png"))]
     num_wallpapers = len(wallpaper_files)
     if num_wallpapers == 0:
-        print("[ERROR] Nie ma żadnej tapety do wybrania\n Uzupełnij Folder Zdjęciami")
+        print(colored("\n [ERROR] Nie ma żadnej tapety do wybrania\n Uzupełnij folder tapetami o formacie [ .png / .jpg ]","red")+"\n"+design())
         time.sleep(3)
         return "menu"
 
@@ -204,7 +214,10 @@ def day_wallpaper(selected_resolution):
         elif user_input == "q":
             return "quit"
         else:
-            print("[ERROR] WTF")
+            clear_screen()
+            print("\n"+"="*31+colored(" Wallpaper Change ","light_cyan")+"="*31+"\n")
+            print(colored(" "*15+"[ERROR] Wpisano niepoprawne dane. Spróbuj ponownie","red"))
+            print("\n" + "="*80)
 # OPCJA [NiGHT]
 def night_wallpaper(selected_resolution):
     program_dir = os.path.dirname(os.path.abspath(__file__))
@@ -212,7 +225,7 @@ def night_wallpaper(selected_resolution):
     wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith((".jpg", ".png"))]
     num_wallpapers = len(wallpaper_files)
     if num_wallpapers == 0:
-        print("[ERROR] Nie ma żadnej tapety do wybrania\n Uzupełnij Folder Zdjęciami")
+        print(colored("\n [ERROR] Nie ma żadnej tapety do wybrania\n Uzupełnij folder tapetami o formacie [ .png / .jpg ]","red")+"\n"+design())
         time.sleep(3)
         return "menu"
 
@@ -228,38 +241,48 @@ def night_wallpaper(selected_resolution):
         elif user_input == "q":
             return "quit"
         else:
-            print("[ERROR] WTF")
+            clear_screen()
+            print("\n"+"="*31+colored(" Wallpaper Change ","light_cyan")+"="*31+"\n")
+            print(colored(" "*15+"[ERROR] Wpisano niepoprawne dane. Spróbuj ponownie","red"))
+            print("\n" + "="*80)
 # OPCJA [RANDOM]
 def random_wallpaper(selected_resolution):
     program_dir = os.path.dirname(os.path.abspath(__file__))
     wallpaper_dir = os.path.join(program_dir, selected_resolution)
     subfolders = ["favorite", "day", "night"]
-    chosen_subfolder = random.choice(subfolders)
-    chosen_wallpaper_dir = os.path.join(wallpaper_dir, chosen_subfolder)
-    wallpaper_files = [f for f in os.listdir(chosen_wallpaper_dir) if f.endswith((".jpg", ".png"))]
+    random.shuffle(subfolders)  # mieszamy kolejność folderów
 
-    num_wallpapers = len(wallpaper_files)
-    if num_wallpapers == 0:
-        print("[ERROR] Nie ma żadnej tapety do wybrania\n Uzupełnij Folder Zdjęciami")
-        time.sleep(3)
-        return "menu"
+    for chosen_subfolder in subfolders:
+        chosen_wallpaper_dir = os.path.join(wallpaper_dir, chosen_subfolder)
+        wallpaper_files = [f for f in os.listdir(chosen_wallpaper_dir) if f.endswith((".jpg", ".png"))]
 
-    random_index = random.randint(0, num_wallpapers - 1)
-    loading_animation()
-    selected_wallpaper = wallpaper_files[random_index]
+        num_wallpapers = len(wallpaper_files)
+        if num_wallpapers > 0:
+            random_index = random.randint(0, num_wallpapers - 1)
+            loading_animation()
+            selected_wallpaper = wallpaper_files[random_index]
+            set_wallpaper(chosen_wallpaper_dir, selected_wallpaper)
+            
+            while True:
+                user_input = input("\n Aby wrócić do MENU wciśnij "+colored("[ENTER]","light_green")+"    ||    Aby wyłączyć PROGRAM wpisz "+colored("[  q  ]","light_green")+"\n\n"+"="*80+"\n").strip().lower()
+                if user_input == "":
+                    return "menu"
+                elif user_input == "q":
+                    return "quit"
+                else:
+                    clear_screen()
+                    print("\n"+"="*31+colored(" Wallpaper Change ","light_cyan")+"="*31+"\n")
+                    print(colored(" "*15+"[ERROR] Wpisano niepoprawne dane. Spróbuj ponownie","red"))
+                    print("\n" + "="*80)
 
-    set_wallpaper(chosen_wallpaper_dir, selected_wallpaper)
-    while True:
-        user_input = input("\n Aby wrócić do MENU wciśnij "+colored("[ENTER]","light_green")+"    ||    Aby wyłączyć PROGRAM wpisz "+colored("[  q  ]","light_green")+"\n\n"+"="*80+"\n").strip().lower()
-        if user_input == "":
-            return "menu"
-        elif user_input == "q":
-            return "quit"
-        else:
-            print("[ERROR] WTF")
+    # Jeśli dojdziemy do tego miejsca, oznacza to, że w żadnym folderze nie ma zdjęć.
+    print("[ERROR] Nie ma żadnej tapety do wybrania\n Uzupełnij Folder Zdjęciami")
+    time.sleep(3)
+    return "menu"
 # OPCJA [Download Wallpapers]
 def download_wallpapers():
     clear_screen()
+    print("\n"+"="*31+colored(" Wallpaper Change ","light_cyan")+"="*31+"\n")
     questions = [
         inquirer.List('choice',
                       message="Wybierz Strone",
@@ -269,19 +292,27 @@ def download_wallpapers():
     answers = inquirer.prompt(questions)
     if answers["choice"] == 'Wallpapers.com':
         webbrowser.open('https://wallpapers.com/')
+        print(design())
+        print("           Otwieram przeglądarkę z wybraną stroną "+ answers["choice"])
     elif answers["choice"] == 'Wallpapercave.com':
         webbrowser.open('https://wallpapercave.com/')
+        print(design())
+        print("           Otwieram przeglądarkę z wybraną stroną "+ answers["choice"])
     elif answers["choice"] == 'Hdqwalls.com':
         webbrowser.open('https://hdqwalls.com/')
+        print(design())
+        print("           Otwieram przeglądarkę z wybraną stroną "+ answers["choice"])
     while True:
-        print("="*80)
-        user_input = input("\n Aby wrócić do MENU wciśnij "+colored("[ENTER]","light_green")+"    ||    Aby wyłączyć PROGRAM wpisz "+colored("[  q  ]","light_green")+"\n\n"+"="*80+"\n").strip().lower()
+        print(design())
+        user_input = input(" Aby wrócić do MENU wciśnij "+colored("[ENTER]","light_green")+"    ||    Aby wyłączyć PROGRAM wpisz "+colored("[  q  ]","light_green")+"\n\n"+"="*80+"\n").strip().lower()
         if user_input == "":
             return "menu"
         elif user_input == "q":
             return "quit"
         else:
-            print("[ERROR] WTF")
+            clear_screen()
+            print("\n"+"="*31+colored(" Wallpaper Change ","light_cyan")+"="*31+"\n")
+            print(colored(" "*15+"[ERROR] Wpisano niepoprawne dane. Spróbuj ponownie","red"))
    
 
 #GŁOWNY PROG
@@ -301,8 +332,8 @@ def main():
                 main()
             elif action == "quit":
                 clear_screen()
-                print("Dziękuje za skorzystanie z programu ~ Sz.S")
-                time.sleep(3)
+                print(colored('"Farewell, my friend\nUntil we meet again ~ Author"','magenta'))
+                time.sleep(2)
                 exit()
 # ---------
         elif chosen_option =="Download Wallpapers":
@@ -312,8 +343,8 @@ def main():
                 main()
             elif action == "quit":
                 clear_screen()
-                print("Dziękuje za skorzystanie z programu ~ Sz.S")
-                time.sleep(3)
+                print(colored('"Farewell, my friend\nUntil we meet again ~ Author"','magenta'))
+                time.sleep(2)
                 exit()
 # ---------
         elif chosen_option == "Change_resolution":
@@ -326,8 +357,8 @@ def main():
                 main()
             elif action == "quit":
                 clear_screen()
-                print("Dziękuje za skorzystanie z programu ~ Sz.S")
-                time.sleep(3)
+                print(colored('"Farewell, my friend\nUntil we meet again ~ Author"','magenta'))
+                time.sleep(2)
                 exit()
 # ---------
         elif chosen_option == "Day":
@@ -337,8 +368,8 @@ def main():
                 main()
             elif action == "quit":
                 clear_screen()
-                print("Dziękuje za skorzystanie z programu ~ Sz.S")
-                time.sleep(3)
+                print(colored('"Farewell, my friend\nUntil we meet again ~ Author"','magenta'))
+                time.sleep(2)
                 exit()
 # ---------
         elif chosen_option == "Night":
@@ -348,8 +379,8 @@ def main():
                 main()
             elif action == "quit":
                 clear_screen()
-                print("Dziękuje za skorzystanie z programu ~ Sz.S")
-                time.sleep(3)
+                print(colored('"Farewell, my friend\nUntil we meet again ~ Author"','magenta'))
+                time.sleep(2)
                 exit()
 # ---------
         elif chosen_option == "Random":
@@ -359,19 +390,17 @@ def main():
                 main()
             elif action == "quit":
                 clear_screen()
-                print("Dziękuje za skorzystanie z programu ~ Sz.S")
-                time.sleep(3)
+                print(colored('"Farewell, my friend\nUntil we meet again ~ Author"','magenta'))
+                time.sleep(2)
                 exit()
 # ---------
-
-
-        input("\n\nKONIEC")
     else:
-        print(design()+"\n Rozdzielczości ekranów na tym komputerze:\n")
+        print("\n"+"="*31+colored(" Wallpaper Change ","light_cyan")+"="*31+"\n")
+        print(" Rozdzielczości ekranów na tym komputerze:\n")
         for resolution in get_screen_resolutions():
             print(resolution)
         print(design())
-        print(" Wybierz folder z Tapetami, które mają być jako tło na twoim ekranie\n")
+        print(colored(" | Wybierz folder z Tapetami, które mają być użyte jako tło na twoim ekranie |\n","light_cyan"))
         
         chosen_folder = choose_resolution_folder()
         print(design()+f"Wybrano folder: {chosen_folder}")

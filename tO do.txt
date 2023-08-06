@@ -1,12 +1,11 @@
-DESIGN
 
 READ.ME
 
 tutorial jak co zrobić co importować i ustawiać
 
-naprawić random bo jak w wybranym folderze nie ma żadnego zdjecia to error brak pliku
-design ERROR WTF . change_resolution, download_wallpapers
+design q 
 
+angielska wersja
 
 
 
