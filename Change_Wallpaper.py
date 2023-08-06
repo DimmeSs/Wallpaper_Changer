@@ -275,8 +275,8 @@ def random_wallpaper(selected_resolution):
                     print(colored(" "*15+"[ERROR] Wpisano niepoprawne dane. Spróbuj ponownie","red"))
                     print("\n" + "="*80)
 
-    # Jeśli dojdziemy do tego miejsca, oznacza to, że w żadnym folderze nie ma zdjęć.
-    print("[ERROR] Nie ma żadnej tapety do wybrania\n Uzupełnij Folder Zdjęciami")
+    # Jeśli w żadnym folderze nie ma zdjęć.
+    print(colored("\n [ERROR] Nie ma żadnej tapety do wybrania\n Uzupełnij folder tapetami o formacie [ .png / .jpg ]","red")+"\n"+design())
     time.sleep(3)
     return "menu"
 # OPCJA [Download Wallpapers]
@@ -316,6 +316,16 @@ def download_wallpapers():
    
 
 #GŁOWNY PROG
+def handle_action(action):
+    if action == "menu":
+        clear_screen()
+        main()
+    elif action == "quit":
+        clear_screen()
+        print(colored('"Farewell, my friend\nUntil we meet again ~ Author"','magenta'))
+        time.sleep(2)
+        exit()
+
 def main():
     selected_resolution = load_selected_resolution()
 
@@ -324,75 +334,25 @@ def main():
         print("\n Używasz folderu z rozdzielczością: "+colored(f"| {selected_resolution} |\n","light_blue")+design())
         chosen_option = main_menu()
         print(design()+"\n Wybrano opcję: " +colored(f"{chosen_option}","light_blue"))
-# ---------
+        
+        action = None
         if chosen_option == "Show_Wallpapers":
             action = show_wallpapers(selected_resolution)
-            if action == "menu":
-                clear_screen()
-                main()
-            elif action == "quit":
-                clear_screen()
-                print(colored('"Farewell, my friend\nUntil we meet again ~ Author"','magenta'))
-                time.sleep(2)
-                exit()
-# ---------
         elif chosen_option =="Download Wallpapers":
             action = download_wallpapers()
-            if action == "menu":
-                clear_screen()
-                main()
-            elif action == "quit":
-                clear_screen()
-                print(colored('"Farewell, my friend\nUntil we meet again ~ Author"','magenta'))
-                time.sleep(2)
-                exit()
-# ---------
         elif chosen_option == "Change_resolution":
             change_resolution()
-# ---------
         elif chosen_option == "Favorite":
             action = favorite_wallpaper(selected_resolution)
-            if action == "menu":
-                clear_screen()
-                main()
-            elif action == "quit":
-                clear_screen()
-                print(colored('"Farewell, my friend\nUntil we meet again ~ Author"','magenta'))
-                time.sleep(2)
-                exit()
-# ---------
         elif chosen_option == "Day":
             action = day_wallpaper(selected_resolution)
-            if action == "menu":
-                clear_screen()
-                main()
-            elif action == "quit":
-                clear_screen()
-                print(colored('"Farewell, my friend\nUntil we meet again ~ Author"','magenta'))
-                time.sleep(2)
-                exit()
-# ---------
         elif chosen_option == "Night":
             action = night_wallpaper(selected_resolution)
-            if action == "menu":
-                clear_screen()
-                main()
-            elif action == "quit":
-                clear_screen()
-                print(colored('"Farewell, my friend\nUntil we meet again ~ Author"','magenta'))
-                time.sleep(2)
-                exit()
-# ---------
         elif chosen_option == "Random":
             action = random_wallpaper(selected_resolution)
-            if action == "menu":
-                clear_screen()
-                main()
-            elif action == "quit":
-                clear_screen()
-                print(colored('"Farewell, my friend\nUntil we meet again ~ Author"','magenta'))
-                time.sleep(2)
-                exit()
+        
+        if action in ["menu", "quit"]:
+            handle_action(action)
 # ---------
     else:
         print("\n"+"="*31+colored(" Wallpaper Change ","light_cyan")+"="*31+"\n")
