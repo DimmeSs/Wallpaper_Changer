@@ -4,9 +4,8 @@ READ.ME
 
 tutorial jak co zrobić co importować i ustawiać
 
-opcja POBIERZ tapety 
-
-wyswietla linki do tapet i umożliwia ci wybranie któregoś z tych linków i otwrozy ci przeglądarkę i stronę którą wybrałeś
+naprawić random bo jak w wybranym folderze nie ma żadnego zdjecia to error brak pliku
+design ERROR WTF . change_resolution, download_wallpapers
 
 
 

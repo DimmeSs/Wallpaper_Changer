@@ -16,12 +16,15 @@ def loading_animation():  # Little animation for drip <3
     clear_screen()
     dots = itertools.cycle([".", "..", "..."])
     counter = 0
-    while counter < 3:  # Break after 3 dots
-        print(f"Loading{next(dots)}", end="\r")#Loading... Animation
+    print("\n"+"="*31+colored(" Wallpaper Change ","light_cyan")+"="*31+"\n")
+    while counter < 3:
+          # Break after 3 dots
+        print(f" Zmienianie Tapety w Toku{next(dots)}", end="\r")#Loading... Animation
         time.sleep(0.5)
         counter += 1
     clear_screen()
-    print("// Wallpaper Changed \\\\\n"+"Have a nice Day <3")
+    print("\n"+"="*31+colored(" Wallpaper Change ","light_cyan")+"="*31)
+    print("\n"+" "*26+"| Tapeta Została Zmieniona |\n"+" "*21+colored(" Dzięki za skorzystanie z programu :3","magenta") +" "*22+"\n"+" "*28+"| Życzę Ci Miłego Dnia |\n\n"+"="*80)
 
 #DODAWANIE FOLDERU Z ROZDZIELCZOŚCIĄ
 def load_selected_resolution():
@@ -116,7 +119,7 @@ def main_menu():
     ]
     questions = [
         inquirer.List('option',
-                      message="Wybierz opcję",
+                      message=colored("Wciśnij [ENTER] aby zatwierdzić wybór","light_blue"),
                       choices=options,
                       ),
     ]
@@ -126,12 +129,14 @@ def main_menu():
 # OPCJA [SHOW_WALLPAPERS]
 def show_wallpapers(selected_resolution):
     clear_screen()
-    print("\nFile with wallpapers will pop up :3\n")
+    print("\n"+"="*31+colored(" Wallpaper Change ","light_cyan")+"="*31+"\n")
+    print(colored("      | Folder z Tapetami o wybranej rozdzielczości został wyświetlony |\n","light_blue"))
+    print("="*80)
     program_dir = os.path.dirname(os.path.abspath(__file__))
     wallpaper_dir = os.path.join(program_dir, selected_resolution)
     subprocess.Popen(f'explorer "{wallpaper_dir}"')
     while True:
-        user_input = input("\nWciśnij enter, aby wrócić do menu głównego lub 'q', aby wyjść:\n").strip().lower()
+        user_input = input("\n Aby wrócić do MENU wciśnij "+colored("[ENTER]","light_green")+"    ||    Aby wyłączyć PROGRAM wpisz "+colored("[  q  ]","light_green")+"\n\n"+"="*80+"\n").strip().lower()
         if user_input == "":
             return "menu"
         elif user_input == "q":
@@ -146,8 +151,8 @@ def favorite_wallpaper(selected_resolution):
     wallpaper_files = [f for f in os.listdir(wallpaper_dir) if f.endswith((".jpg",".png"))]
     num_wallpapers = len(wallpaper_files)
     if num_wallpapers == 0:
-        print("\n[ERROR] Nie ma żadnej tapety do wybrania\n Uzupełnij Folder Zdjęciami")
-        time.sleep(3)
+        print(colored("\n [ERROR] Nie ma żadnej tapety do wybrania\n Uzupełnij folder tapetami o formacie [ .png / .jpg ]","red")+"\n"+design())
+        time.sleep(4)
         return "menu"
 
     random_index = random.randint(0, num_wallpapers - 1)
@@ -155,7 +160,7 @@ def favorite_wallpaper(selected_resolution):
     selected_wallpaper = wallpaper_files[random_index]
     set_wallpaper(wallpaper_dir, selected_wallpaper)
     while True:
-        user_input = input("\nWciśnij enter, aby wrócić do menu głównego lub 'q', aby wyjść:\n").strip().lower()
+        user_input = input("\n Aby wrócić do MENU wciśnij "+colored("[ENTER]","light_green")+"    ||    Aby wyłączyć PROGRAM wpisz "+colored("[  q  ]","light_green")+"\n\n"+"="*80+"\n").strip().lower()
         if user_input == "":
             return "menu"
         elif user_input == "q":
@@ -193,7 +198,7 @@ def day_wallpaper(selected_resolution):
 
     set_wallpaper(wallpaper_dir, selected_wallpaper)
     while True:
-        user_input = input("\nWciśnij enter, aby wrócić do menu głównego lub 'q', aby wyjść:\n").strip().lower()
+        user_input = input("\n Aby wrócić do MENU wciśnij "+colored("[ENTER]","light_green")+"    ||    Aby wyłączyć PROGRAM wpisz "+colored("[  q  ]","light_green")+"\n\n"+"="*80+"\n").strip().lower()
         if user_input == "":
             return "menu"
         elif user_input == "q":
@@ -217,7 +222,7 @@ def night_wallpaper(selected_resolution):
 
     set_wallpaper(wallpaper_dir, selected_wallpaper)
     while True:
-        user_input = input("\nWciśnij enter, aby wrócić do menu głównego lub 'q', aby wyjść:\n").strip().lower()
+        user_input = input("\n Aby wrócić do MENU wciśnij "+colored("[ENTER]","light_green")+"    ||    Aby wyłączyć PROGRAM wpisz "+colored("[  q  ]","light_green")+"\n\n"+"="*80+"\n").strip().lower()
         if user_input == "":
             return "menu"
         elif user_input == "q":
@@ -245,7 +250,7 @@ def random_wallpaper(selected_resolution):
 
     set_wallpaper(chosen_wallpaper_dir, selected_wallpaper)
     while True:
-        user_input = input("\nWciśnij enter, aby wrócić do menu głównego lub 'q', aby wyjść:\n").strip().lower()
+        user_input = input("\n Aby wrócić do MENU wciśnij "+colored("[ENTER]","light_green")+"    ||    Aby wyłączyć PROGRAM wpisz "+colored("[  q  ]","light_green")+"\n\n"+"="*80+"\n").strip().lower()
         if user_input == "":
             return "menu"
         elif user_input == "q":
@@ -269,7 +274,8 @@ def download_wallpapers():
     elif answers["choice"] == 'Hdqwalls.com':
         webbrowser.open('https://hdqwalls.com/')
     while True:
-        user_input = input("\nWciśnij enter, aby wrócić do menu głównego lub 'q', aby wyjść:\n").strip().lower()
+        print("="*80)
+        user_input = input("\n Aby wrócić do MENU wciśnij "+colored("[ENTER]","light_green")+"    ||    Aby wyłączyć PROGRAM wpisz "+colored("[  q  ]","light_green")+"\n\n"+"="*80+"\n").strip().lower()
         if user_input == "":
             return "menu"
         elif user_input == "q":
@@ -283,10 +289,10 @@ def main():
     selected_resolution = load_selected_resolution()
 
     if selected_resolution:
-        print("Witaj w programie :3")
-        print(f"Używana rozdzielczość: {selected_resolution}"+design())
+        print("\n"+"="*31+colored(" Wallpaper Change ","light_cyan")+"="*31)
+        print("\n Używasz folderu z rozdzielczością: "+colored(f"| {selected_resolution} |\n","light_blue")+design())
         chosen_option = main_menu()
-        print(design()+f"Wybrano opcję: {chosen_option}")
+        print(design()+"\n Wybrano opcję: " +colored(f"{chosen_option}","light_blue"))
 # ---------
         if chosen_option == "Show_Wallpapers":
             action = show_wallpapers(selected_resolution)
